@@ -7,7 +7,21 @@ const controller = {};
 
 controller.getLogControls = async (req, res, next) => {
   try {
-    const logs = await LogControl.findAll();
+    const options = {
+      order: [["id", "DESC"]],
+      attributes: [
+        "id",
+        "message",
+        "name",
+        "statusCode",
+        "createdAt",
+        "module",
+        "action",
+        "stack",
+      ],
+    };
+
+    const logs = await LogControl.findAll({ ...options });
     res.status(200).json(logs);
   } catch (error) {
     setConfigError(error, { action: "GET - All logs" }, next);
